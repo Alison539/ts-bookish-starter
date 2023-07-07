@@ -22,6 +22,7 @@ class Book {
     }
 }
 
+<<<<<<< HEAD
 class AllBooks {
     books;
 
@@ -30,6 +31,26 @@ class AllBooks {
         this.books.push(bookToAdd);
         return(generalInfo[0]);
     }
+=======
+// allBooks
+
+// addBook(tempArray){
+
+// }
+// //SQL get general
+
+// //SQL get unavailables
+// SELECT dueDate, username 
+// FROM Borrowing
+// JOIN Users ON Borrowing.UserID = Users.UserID
+// WHERE ISBN = 'isbn'
+
+// //SQL get author info
+// SELECT AuthorName
+// FROM Author
+// JOIN Wrote ON Wrote.AuthorID = Author.AuthorID
+// WHERE Wrote.ISBN = 'isbn'
+>>>>>>> 08edd5c2d9ac18761cc63ea993fbff9ec20f75e6
 
     setAuthors(authorInfo){
         let bookToChange = this.books[this.books.length - 1];
