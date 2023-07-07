@@ -78,7 +78,7 @@ app.get('/books', (req, res) => {
         getAuthorsQuery(isbn);
         getUnavailablesQuery(isbn);
         tempArray = []
-        
+        console.log(books)
     });
 
 
