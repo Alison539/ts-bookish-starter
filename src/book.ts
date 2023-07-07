@@ -25,6 +25,10 @@ class Book {
 export class AllBooks {
     books;
 
+    constructor(){
+        this.books = [];
+    }
+
     newBook(generalInfo){
         let bookToAdd = new Book(generalInfo);
         this.books.push(bookToAdd);
