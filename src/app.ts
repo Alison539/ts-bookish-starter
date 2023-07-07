@@ -17,3 +17,10 @@ app.listen(port, () => {
  */
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
+
+
+
+
+app.get('/books', (req, res) => {
+    res.send('Hello World');
+});
