@@ -1,6 +1,6 @@
 import express from 'express';
 import 'dotenv/config';
-import {AllBooks} from './book'
+import {AllBooks} from './book2'
 
 import healthcheckRoutes from './controllers/healthcheckController';
 import bookRoutes from './controllers/bookController';
@@ -57,7 +57,7 @@ app.get('/books', (req, res) => {
     let message = []
     
 
-    let getGeneral = new Request("SELECT ISBN, Title, numberOfCopies FROM Book", function(err, rowCount) {
+    let getGeneral = new Request("SELECT ISBN, Title, numberOfCopies FROM Book \n SELECT ISBN, AuthorName FROM Wrote JOIN Author ON Wrote.AuthorID = Author.AuthorID \n SELECT ISBN, DueDate, Username, Borrowing.UserID FROM Borrowing JOIN Users ON Borrowing.UserID = Users.UserID", function(err, rowCount) {
         if (err) {
           console.log(err);
         } else {
@@ -74,9 +74,21 @@ app.get('/books', (req, res) => {
           tempArray.push(column.value)
         });
         console.log(tempArray)
-        let isbn = books.newBook(tempArray)
-        getAuthorsQuery(isbn);
-        getUnavailablesQuery(isbn);
+
+        let numberItems = tempArray.length
+        if (numberItems == 3){
+            //it is the general (ISBN Title numberofCopies)
+            books.newBook(tempArray)
+        }
+        else if (numberItems == 2){
+            //it is an author
+            books.setAuthors(tempArray)
+        }
+        else if (numberItems == 4){
+          //its about an unavailable book
+            books.setUnavailable(tempArray)
+
+        }
         tempArray = []
         console.log(books)
     });
@@ -86,51 +98,4 @@ app.get('/books', (req, res) => {
     res.send(message);
 });
 
-//CREATING SQL QUERIES
-function getAuthorsQuery(isbn){
-    let getAuthors = new Request("SELECT AuthorName FROM Author JOIN Wrote ON Wrote.AuthorID = Author.AuthorID WHERE Wrote.ISBN = " + isbn, function(err, rowCount) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log(rowCount + ' rows');
-          // and we close the connection
-          connection.close()
-        }
-      });
-      getAuthors.on('row', function(columns) {
-        let tempArray = []
-        columns.forEach(function(column) {
-        //   console.log(column.value);
-          tempArray.push(column.value)
-        });
-        console.log(tempArray)
-        books.setAuthors(tempArray)
-        tempArray = []
-        
-    });
-
-}
-
-function getUnavailablesQuery(isbn) {
-    let getUnavailables = new Request("SELECT AuthorName FROM Author JOIN Wrote ON Wrote.AuthorID = Author.AuthorID WHERE Wrote.ISBN = " + isbn , function(err, rowCount) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log(rowCount + ' rows');
-          // and we close the connection
-          connection.close()
-        }
-      });
-      getUnavailables.on('row', function(columns) {
-        let tempArray = []
-        columns.forEach(function(column) {
-        //   console.log(column.value);
-          tempArray.push(column.value)
-        });
-        console.log(tempArray)
-        books.setUnavailable(tempArray)
-        tempArray = []
-        
-    });
-}
 console.log(books)
