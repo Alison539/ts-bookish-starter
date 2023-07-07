@@ -53,7 +53,7 @@ connection.connect();
 app.get('/books', (req, res) => {
     let message = []
 
-    let request = new Request("SELECT * FROM Book", function(err, rowCount) {
+    let getGeneral = new Request("SELECT ISBN, Title, numberOfCopies FROM Book", function(err, rowCount) {
         if (err) {
           console.log(err);
         } else {
@@ -63,18 +63,18 @@ app.get('/books', (req, res) => {
         }
       });
 
-    request.on('row', function(columns) {
+      getGeneral.on('row', function(columns) {
         let tempArray = []
         columns.forEach(function(column) {
         //   console.log(column.value);
           tempArray.push(column.value)
         });
-        message.push(tempArray)
+        console.log(tempArray)
         tempArray = []
-        console.log(message)
+        
     });
 
 
-    connection.execSql(request);
+    connection.execSql(getGeneral);
     res.send(message);
 });
