@@ -13,10 +13,10 @@ class Book {
         this.totalCopies = message[2]
     }
 
-    setAuthors(authors){
+    changeAuthors(authors){
         this.authors = authors;
     }
-    setUnavailable(unavailable){
+    changeUnavailable(unavailable){
         this.unavailable = unavailable;
         this.availableCopies = this.totalCopies - this.unavailable.length
     }
@@ -33,10 +33,10 @@ class AllBooks {
 
     setAuthors(authorInfo){
         let bookToChange = this.books[this.books.length - 1];
-        bookToChange.setAuthors(authorInfo);
+        bookToChange.changeAuthors(authorInfo);
     }
     setUnavailable(unavailableInfo){
         let bookToChange = this.books[this.books.length - 1];
-        bookToChange.setAuthors(unavailableInfo);
+        bookToChange.changeUnavailable(unavailableInfo);
     }
 }
