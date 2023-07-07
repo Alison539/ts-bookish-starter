@@ -1,10 +1,13 @@
 import express from 'express';
 import 'dotenv/config';
+import {AllBooks} from './book'
 
 import healthcheckRoutes from './controllers/healthcheckController';
 import bookRoutes from './controllers/bookController';
 
 const port = process.env['PORT'] || 3000;
+
+var books = new AllBooks();
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -52,6 +55,7 @@ connection.connect();
 //BOOKS ENDPOINT TO RETURN ALL BOOKS
 app.get('/books', (req, res) => {
     let message = []
+    
 
     let getGeneral = new Request("SELECT ISBN, Title, numberOfCopies FROM Book", function(err, rowCount) {
         if (err) {
@@ -70,6 +74,9 @@ app.get('/books', (req, res) => {
           tempArray.push(column.value)
         });
         console.log(tempArray)
+        let isbn = books.newBook(tempArray)
+        getAuthorsQuery(isbn);
+        getUnavailablesQuery(isbn);
         tempArray = []
         
     });
@@ -90,6 +97,17 @@ function getAuthorsQuery(isbn){
           connection.close()
         }
       });
+      getAuthors.on('row', function(columns) {
+        let tempArray = []
+        columns.forEach(function(column) {
+        //   console.log(column.value);
+          tempArray.push(column.value)
+        });
+        console.log(tempArray)
+        books.setAuthors(tempArray)
+        tempArray = []
+        
+    });
 
 }
 
@@ -103,4 +121,16 @@ function getUnavailablesQuery(isbn) {
           connection.close()
         }
       });
+      getUnavailables.on('row', function(columns) {
+        let tempArray = []
+        columns.forEach(function(column) {
+        //   console.log(column.value);
+          tempArray.push(column.value)
+        });
+        console.log(tempArray)
+        books.setUnavailable(tempArray)
+        tempArray = []
+        
+    });
 }
+console.log(books)
