@@ -22,22 +22,22 @@ class Book {
     }
 }
 
-allBooks
+// allBooks
 
-addBook(tempArray){
+// addBook(tempArray){
 
-}
-//SQL get general
+// }
+// //SQL get general
 
-//SQL get unavailables
-SELECT dueDate, username 
-FROM Borrowing
-JOIN Users ON Borrowing.UserID = Users.UserID
-WHERE ISBN = 'isbn'
+// //SQL get unavailables
+// SELECT dueDate, username 
+// FROM Borrowing
+// JOIN Users ON Borrowing.UserID = Users.UserID
+// WHERE ISBN = 'isbn'
 
-//SQL get author info
-SELECT AuthorName
-FROM Author
-JOIN Wrote ON Wrote.AuthorID = Author.AuthorID
-WHERE Wrote.ISBN = 'isbn'
+// //SQL get author info
+// SELECT AuthorName
+// FROM Author
+// JOIN Wrote ON Wrote.AuthorID = Author.AuthorID
+// WHERE Wrote.ISBN = 'isbn'
 

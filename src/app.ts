@@ -78,3 +78,29 @@ app.get('/books', (req, res) => {
     connection.execSql(getGeneral);
     res.send(message);
 });
+
+//CREATING SQL QUERIES
+function getAuthorsQuery(isbn){
+    let getAuthors = new Request("SELECT AuthorName FROM Author JOIN Wrote ON Wrote.AuthorID = Author.AuthorID WHERE Wrote.ISBN = " + isbn, function(err, rowCount) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(rowCount + ' rows');
+          // and we close the connection
+          connection.close()
+        }
+      });
+
+}
+
+function getUnavailablesQuery(isbn) {
+    let getUnavailables = new Request("SELECT AuthorName FROM Author JOIN Wrote ON Wrote.AuthorID = Author.AuthorID WHERE Wrote.ISBN = " + isbn , function(err, rowCount) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(rowCount + ' rows');
+          // and we close the connection
+          connection.close()
+        }
+      });
+}
