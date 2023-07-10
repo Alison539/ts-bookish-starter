@@ -17,3 +17,8 @@ INSERT INTO Users(UserID, Username)
 VALUES (1,'Johnnie Snough');
 INSERT INTO Borrowing(ID, ISBN, UserID, DueDate)
 VALUES (1, '0103652001', 1, '2023-07-08');
+
+INSERT INTO Logins(Usernames, Passwords)
+VALUES ('Fluffy23', 'Bunny64');
+INSERT INTO Logins(Usernames, Passwords)
+VALUES ('Johnnie4', 'Beach12')
