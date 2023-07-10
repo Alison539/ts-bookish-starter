@@ -35,3 +35,8 @@ CREATE TABLE Borrowing (
     FOREIGN KEY (ISBN) REFERENCES Book(ISBN),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
+
+CREATE TABLE (
+    Usernames varchar(255),
+    Passwords varchar(255)
+);
