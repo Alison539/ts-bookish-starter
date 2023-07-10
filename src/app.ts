@@ -32,7 +32,7 @@ app.listen(port, () => {
  * Primary app routes.
  */
 app.use('/healthcheck', healthcheckRoutes);
-app.use('/books', passport.authenticate('jwt', {session: false}), bookRoutes);
+app.use('/books', bookRoutes);
 app.use('/login', bookRoutes);
 //app.use('/auth', auth);
 
@@ -75,6 +75,7 @@ app.get('/login', (req, res) => {
 function checkCredentials(username,password,res){
   let checkAuthenticate = new Request("SELECT Passwords FROM Logins WHERE Usernames = '" + username + "' AND Passwords = '" + password + "'",  function(err, rowCount,rows) {
     if (err) {
+      console.log(err)
       return res.status(400).json({
         message: 'Something is not right',
         user   : false
@@ -88,7 +89,7 @@ function checkCredentials(username,password,res){
         });
       }
       else{
-        const token = jwt.sign(username, 'super secret');
+        const token = jwt.sign({username: username}, 'super secret');
         return res.json({username, token});
         res.send("Correct username and password")
       }
@@ -122,8 +123,12 @@ export function confirmCredentials(username,password){
 
 
 //BOOKS ENDPOINT TO RETURN ALL BOOKS
-app.get('/books', (req, res) => {
+app.get('/books', passport.authenticate('jwt', {session: false}), 
+  function (req, res) {
+
   var books = new AllBooks();
+  
+  
   let getGeneral = new Request("SELECT ISBN, Title, numberOfCopies FROM Book \n SELECT ISBN, AuthorName FROM Wrote JOIN Author ON Wrote.AuthorID = Author.AuthorID \n SELECT ISBN, DueDate, Username, Borrowing.UserID FROM Borrowing JOIN Users ON Borrowing.UserID = Users.UserID", function(err, rowCount) {
     if (err) {
       console.log(err);
@@ -165,6 +170,7 @@ connection.execSql(getGeneral);
 
 
     
-});
+}
+);
 
 
