@@ -10,9 +10,7 @@ passport2.use(new JWTStrategy({
         secretOrKey   : 'super secret'
     },
     function (jwtPayload, cb) {
-
-       
-                return cb(null);
-            
+        console.log(jwtPayload.username)
+        return cb(null, jwtPayload.username)
     }
 ));
